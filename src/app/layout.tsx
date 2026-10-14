@@ -35,6 +35,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: "(()=>{try{const t=localStorage.getItem('npsd-public-theme');document.documentElement.dataset.publicTheme=(t==='light'||t==='dark')?t:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.publicTheme='light'}})()" }} />
+      </head>
       <body>
         <LanguageProvider>
           <SiteChrome>{children}</SiteChrome>
