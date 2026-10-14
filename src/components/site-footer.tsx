@@ -1,4 +1,21 @@
- "use client";
 import Link from "next/link";
-import {useLanguage} from "./language-provider";
-export function SiteFooter(){const {t}=useLanguage();return <footer className="mt-16 border-t border-[var(--border)] bg-white"><div className="container-shell grid gap-7 py-9 sm:grid-cols-2"><div><p className="font-extrabold">School Portal</p><p className="muted mt-2 max-w-sm text-sm">{t.footerNote}</p></div><div className="sm:text-end"><p className="text-sm font-bold">{t.nav.home}</p><div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-sm text-[var(--muted)] sm:justify-end"><Link href="/about">{t.nav.about}</Link><Link href="/admissions">{t.nav.admissions}</Link><Link href="/contact">{t.nav.contact}</Link><Link href="/login">{t.nav.portal}</Link></div></div></div><div className="border-t border-[var(--border)] py-4 text-center text-xs text-[var(--muted)]">© {new Date().getFullYear()} · {t.footerNote}</div></footer>}
+
+export function SiteFooter() {
+  return (
+    <footer className="site-footer">
+      <div className="container-shell footer-main">
+        <div className="footer-brand-block">
+          <Link href="/" className="school-brand footer-brand" aria-label="Noble Public School Dadu home">
+            <span className="school-brand-mark" aria-hidden="true"><span>N</span></span>
+            <span className="school-brand-copy"><strong>Noble Public School Dadu</strong><small>Learning · Character · Community</small></span>
+          </Link>
+          <p>A place to build knowledge, confidence and the habits that support lifelong learning.</p>
+          <span className="footer-location">Dadu, Sindh, Pakistan</span>
+        </div>
+        <div className="footer-links-group"><h2>Explore</h2><Link href="/about">About us</Link><Link href="/classes">Academics · Classes 1–8</Link><Link href="/gallery">Gallery</Link><Link href="/notices">News &amp; notices</Link></div>
+        <div className="footer-links-group"><h2>Connect</h2><Link href="/admissions">Admissions enquiry</Link><Link href="/contact">Contact the school</Link><p>Official phone, email and office hours will be published after school verification.</p></div>
+      </div>
+      <div className="footer-bottom"><div className="container-shell"><span>© {new Date().getFullYear()} Noble Public School Dadu</span><span>School information for families and the community</span></div></div>
+    </footer>
+  );
+}
