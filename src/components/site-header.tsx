@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { LanguageSwitcher } from "./language-switcher";
 import { ThemeToggle } from "./theme-toggle";
+import { publicSiteContent as copy } from "@/lib/public-site/content";
 
 const links = [
   { label: "Home", href: "/" },
@@ -43,9 +44,9 @@ export function SiteHeader() {
     <header className="site-header">
       <a href="#main" className="skip-link">Skip to content</a>
       <div className="container-shell header-inner">
-        <Link href="/" className="school-brand" aria-label="Noble Public School Dadu home" onClick={closeMenu}>
+        <Link href="/" className="school-brand" aria-label={`${copy.identity.name} home`} onClick={closeMenu}>
           <span className="school-brand-mark" aria-hidden="true"><span>N</span></span>
-          <span className="school-brand-copy"><strong>Noble Public School Dadu</strong><small>Learning · Character · Community</small></span>
+          <span className="school-brand-copy"><strong>{copy.identity.name}</strong><small>{copy.identity.strapline}</small></span>
         </Link>
 
         <nav aria-label="Main navigation" className="desktop-nav">
