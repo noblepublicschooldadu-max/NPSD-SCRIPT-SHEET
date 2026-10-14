@@ -1,3 +1,116 @@
- "use client";
-import Link from "next/link";import {useLanguage} from "@/components/language-provider";import {SectionHeading} from "@/components/section-heading";import {NoticeList} from "@/components/notice-list";import {GalleryGrid} from "@/components/gallery-grid";
-export default function HomePage(){const {t}=useLanguage();return <><section className="border-b border-[var(--border)] bg-white"><div className="container-shell grid items-center gap-10 py-14 md:grid-cols-[1.05fr_.95fr] md:py-20"><div><p className="eyebrow mb-4">{t.heroEyebrow}</p><h1 className="max-w-2xl text-4xl leading-[1.1] font-black tracking-[-.045em] sm:text-5xl">{t.heroTitle}</h1><p className="muted mt-5 max-w-xl text-lg">{t.heroBody}</p><div className="mt-7 flex flex-wrap gap-3"><Link className="btn btn-primary" href="/about">{t.explore} →</Link><Link className="btn btn-secondary" href="/admissions">{t.admissionsCta}</Link></div><p className="muted mt-4 text-xs">{t.placeholder}</p></div><div className="rounded-2xl bg-[#176b52] p-7 text-white sm:p-9"><div className="flex items-center justify-between"><span className="text-sm font-bold text-white/80">School Portal</span><span className="text-2xl text-[#e8bb4e]" aria-hidden="true">✳</span></div><div className="my-9 flex items-end gap-2" aria-hidden="true"><span className="h-14 w-12 rounded-t-lg bg-[#e8bb4e]"/><span className="h-20 w-12 rounded-t-lg bg-[#c5dfce]"/><span className="h-16 w-12 rounded-t-lg bg-[#f4e8c7]"/><span className="h-28 w-12 rounded-t-lg bg-white/90"/></div><h2 className="max-w-sm text-3xl font-extrabold leading-tight">Curiosity today. Possibility tomorrow.</h2><p className="mt-3 max-w-sm text-sm text-white/75">A thoughtful foundation for learning, school life, and community.</p><div className="mt-7 border-t border-white/20 pt-4 text-sm text-white/75">Classes 1–8 · Sindh, Pakistan</div></div></div></section><section className="container-shell py-14"><SectionHeading eyebrow={t.introLabel} title={t.introTitle} description={t.introBody}/><div className="grid gap-4 md:grid-cols-3">{[1,2,3,4,5,6,7,8].map(n=><Link key={n} href="/classes" className="card flex items-center justify-between p-4 hover:border-[var(--brand)]"><div><p className="muted text-xs">{t.classLabel}</p><h3 className="text-lg font-extrabold">{n}</h3></div><span className="text-xl text-[var(--brand)]" aria-hidden="true">↗</span></Link>)}</div></section><section className="bg-[#edf4ef] py-14"><div className="container-shell"><SectionHeading eyebrow={t.facilitiesTitle} title={t.facilitiesTitle} description={t.facilitiesBody}/><div className="grid gap-4 md:grid-cols-3">{["Reading & discovery","Learning activities","A welcoming classroom"].map((label,i)=><div className="rounded-xl border border-[#d9e6dd] bg-white p-5" key={label}><span className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--soft)] text-lg text-[var(--brand)]" aria-hidden="true">{["▤","✳","⌂"][i]}</span><h3 className="font-bold">{label}</h3><p className="muted mt-2 text-sm">{t.placeholder}</p></div>)}</div></div></section><section className="container-shell py-14"><div className="mb-6 flex flex-wrap items-end justify-between gap-3"><SectionHeading title={t.noticesTitle} description={t.noticesBody}/><Link className="btn btn-secondary mb-7" href="/notices">{t.viewAll} →</Link></div><NoticeList/></section><section className="container-shell py-4"><div className="mb-6 flex flex-wrap items-end justify-between gap-3"><SectionHeading title={t.teachersTitle} description={t.teachersBody}/><Link className="btn btn-secondary mb-7" href="/teachers">{t.viewAll} →</Link></div><div className="card flex items-start gap-4 p-6"><span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--soft)] text-xl text-[var(--brand)]" aria-hidden="true">♙</span><div><h3 className="font-bold">{t.placeholder}</h3><p className="muted mt-1 text-sm">{t.teachersBody}</p></div></div></section><section className="container-shell py-14"><div className="mb-6 flex flex-wrap items-end justify-between gap-3"><SectionHeading title={t.galleryTitle} description={t.galleryBody}/><Link className="btn btn-secondary mb-7" href="/gallery">{t.viewAll} →</Link></div><GalleryGrid/></section><section className="container-shell pb-4"><div className="flex flex-col justify-between gap-5 rounded-2xl bg-[#173f32] p-7 text-white sm:flex-row sm:items-center sm:p-9"><div><p className="text-xs font-extrabold tracking-widest text-[#e8bb4e]">{t.admissionsTitle}</p><h2 className="mt-2 text-2xl font-extrabold">{t.admissionsBody}</h2></div><Link href="/admissions" className="btn shrink-0 bg-white text-[#173f32]">{t.readMore} →</Link></div></section><section className="container-shell py-14"><SectionHeading title={t.contactTitle} description={t.contactBody}/><Link href="/contact" className="btn btn-primary">{t.contactTitle} →</Link></section></>}
+import Image from "next/image";
+import Link from "next/link";
+import { ContactForm } from "@/components/contact-form";
+import { GalleryGrid } from "@/components/gallery-grid";
+import { NoticeList } from "@/components/notice-list";
+
+const classes = Array.from({ length: 8 }, (_, index) => index + 1);
+
+export default function HomePage() {
+  return (
+    <div className="public-home">
+      <section className="hero-section" aria-labelledby="hero-title">
+        <div className="container-shell hero-grid">
+          <div className="hero-copy">
+            <p className="eyebrow"><span className="eyebrow-mark" aria-hidden="true" /> A school community in Dadu, Sindh</p>
+            <h1 id="hero-title">Building knowledge.<br /><span>Inspiring futures.</span></h1>
+            <p className="hero-description">At Noble Public School Dadu, learning is a journey of curiosity, confidence and care—helping children build strong foundations for the years ahead.</p>
+            <div className="hero-actions">
+              <Link href="/about" className="btn btn-primary">Explore Our School <span aria-hidden="true">↗</span></Link>
+              <Link href="/admissions" className="btn btn-outline">Admissions Enquiry <span aria-hidden="true">→</span></Link>
+            </div>
+            <div className="hero-note"><span className="hero-note-rule" aria-hidden="true" /> Primary &amp; middle learning <span aria-hidden="true">·</span> Classes 1–8</div>
+          </div>
+          <div className="hero-visual">
+            <div className="hero-image-frame">
+              <Image
+                src="/images/campus-photo-placeholder.svg"
+                alt="Illustrated campus placeholder, not a photograph of the actual Noble Public School Dadu campus"
+                width={1200}
+                height={900}
+                priority
+                sizes="(max-width: 760px) 100vw, 52vw"
+                className="hero-image"
+              />
+              <div className="photo-status"><span aria-hidden="true" /> Campus photograph awaiting school approval</div>
+            </div>
+            <div className="hero-visual-caption"><span className="caption-line" aria-hidden="true" /><span>Dadu, Sindh, Pakistan</span></div>
+          </div>
+        </div>
+        <div className="hero-bottom-rule" aria-hidden="true" />
+      </section>
+
+      <section className="intro-section public-section" id="about" aria-labelledby="intro-title">
+        <div className="container-shell intro-grid">
+          <div className="intro-aside"><p className="eyebrow">Welcome to our school</p><span className="intro-number" aria-hidden="true">01</span></div>
+          <div className="intro-content">
+            <h2 id="intro-title">Every child deserves a strong start.</h2>
+            <p className="intro-lead">Noble Public School Dadu serves as a place to nurture the habits that help children learn: asking questions, practising new skills, showing respect and taking pride in their progress.</p>
+            <p className="muted">Our public information is being prepared with the school community. Verified details about staff, campus facilities, school history and official policies will be added when supplied by the school.</p>
+            <Link href="/about" className="text-link">Get to know our school <span aria-hidden="true">↗</span></Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="academics-section public-section" id="academics" aria-labelledby="academics-title">
+        <div className="container-shell">
+          <div className="section-topline"><p className="eyebrow">Learning pathways</p><span className="section-index">01 / 03</span></div>
+          <div className="section-heading-row"><h2 id="academics-title" className="section-title">A foundation for every next step.</h2><p className="muted">Classes 1–8, with learning that grows alongside each student.</p></div>
+          <div className="class-grid">
+            {classes.map((grade) => (
+              <Link key={grade} href="/classes" className="class-card">
+                <span className="class-card-label">CLASS</span><span className="class-card-number">{String(grade).padStart(2, "0")}</span><span className="class-card-arrow" aria-hidden="true">↗</span>
+              </Link>
+            ))}
+          </div>
+          <div className="learning-bands">
+            <article><span className="band-marker" aria-hidden="true">A</span><div><h3>Primary learning</h3><p>Classes 1–5 · Building literacy, numeracy, curiosity and the confidence to participate.</p></div></article>
+            <article><span className="band-marker" aria-hidden="true">B</span><div><h3>Middle learning</h3><p>Classes 6–8 · Strengthening understanding, independent thinking and readiness for the next stage.</p></div></article>
+          </div>
+          <p className="content-note">These are broad learning-stage descriptions, not a published curriculum or an official syllabus statement.</p>
+        </div>
+      </section>
+
+      <section className="values-section public-section" id="values" aria-labelledby="values-title">
+        <div className="container-shell values-grid">
+          <div className="values-heading"><p className="eyebrow">What learning can build</p><h2 id="values-title" className="section-title">Knowledge matters.<br /><span>Character matters, too.</span></h2><p className="muted">The values below describe the school's intended public-facing message; the school can edit or approve them before publication.</p></div>
+          <div className="values-list">
+            <article><span className="value-number">01</span><div><h3>Curiosity</h3><p>Encourage children to ask questions, explore ideas and keep learning.</p></div><span className="value-arrow" aria-hidden="true">↗</span></article>
+            <article><span className="value-number">02</span><div><h3>Confidence</h3><p>Make room for practice, participation and steady personal progress.</p></div><span className="value-arrow" aria-hidden="true">↗</span></article>
+            <article><span className="value-number">03</span><div><h3>Respect</h3><p>Support kindness, responsibility and positive relationships in school life.</p></div><span className="value-arrow" aria-hidden="true">↗</span></article>
+            <article><span className="value-number">04</span><div><h3>Partnership</h3><p>Keep families informed through clear, respectful communication.</p></div><span className="value-arrow" aria-hidden="true">↗</span></article>
+          </div>
+        </div>
+      </section>
+
+      <section className="environment-section public-section" id="facilities" aria-labelledby="environment-title">
+        <div className="container-shell environment-inner">
+          <div className="environment-copy"><p className="eyebrow">Learning environment</p><h2 id="environment-title" className="section-title">A school story told with care.</h2><p className="muted">We will share photographs and details of classrooms, facilities and school life here once the school provides and approves the material. No unverified campus features are being advertised.</p><Link href="/contact" className="text-link">Contact the school team <span aria-hidden="true">↗</span></Link></div>
+          <div className="environment-art" aria-label="Campus illustration placeholder"><Image src="/images/campus-photo-placeholder.svg" alt="Illustrated placeholder for an approved campus or classroom photograph" width={1200} height={900} sizes="(max-width: 760px) 100vw, 40vw" /></div>
+        </div>
+      </section>
+
+      <section className="notices-section public-section" id="notices" aria-labelledby="notices-title">
+        <div className="container-shell">
+          <div className="section-heading-row notices-heading"><div><p className="eyebrow">From the school</p><h2 id="notices-title" className="section-title">News &amp; notices</h2></div><Link href="/notices" className="text-link">All notices <span aria-hidden="true">↗</span></Link></div>
+          <NoticeList />
+        </div>
+      </section>
+
+      <section className="gallery-section public-section" id="gallery" aria-labelledby="gallery-title">
+        <div className="container-shell">
+          <div className="section-heading-row notices-heading"><div><p className="eyebrow">A glimpse of school life</p><h2 id="gallery-title" className="section-title">Our gallery</h2><p className="muted">Only school-approved images will appear here.</p></div><Link href="/gallery" className="text-link">View gallery <span aria-hidden="true">↗</span></Link></div>
+          <GalleryGrid />
+        </div>
+      </section>
+
+      <section className="admissions-banner public-section" aria-labelledby="admissions-title">
+        <div className="container-shell admissions-banner-inner"><div><p className="eyebrow">Admissions information</p><h2 id="admissions-title">Taking the next step starts with a conversation.</h2><p>Check the current admissions information and confirmed school contact channels before sharing personal details.</p></div><Link href="/admissions" className="btn btn-gold">Admissions Enquiry <span aria-hidden="true">↗</span></Link></div>
+      </section>
+
+      <section className="enquiry-section public-section" id="enquiry" aria-labelledby="enquiry-title">
+        <div className="container-shell enquiry-grid"><div><p className="eyebrow">Get in touch</p><h2 id="enquiry-title" className="section-title">Questions about our school?</h2><p className="muted">Use this form to prepare an enquiry. Online delivery is not connected yet, so your message will not be sent or stored.</p><div className="contact-location"><span className="location-mark" aria-hidden="true">N</span><div><strong>Noble Public School Dadu</strong><p>Dadu, Sindh, Pakistan</p></div></div></div><ContactForm /></div>
+      </section>
+    </div>
+  );
+}
