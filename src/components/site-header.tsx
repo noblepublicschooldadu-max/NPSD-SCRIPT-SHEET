@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { useLanguage } from "./language-provider";
 import { LanguageSwitcher } from "./language-switcher";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -17,7 +16,6 @@ const links = [
 ];
 
 export function SiteHeader() {
-  const { t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const firstMobileLink = useRef<HTMLAnchorElement>(null);
 
