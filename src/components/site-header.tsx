@@ -26,6 +26,7 @@ export function SiteHeader() {
   }, [menuOpen]);
 
   useEffect(() => {
+    if (!menuOpen) return;
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setMenuOpen(false);
@@ -34,7 +35,7 @@ export function SiteHeader() {
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
+  }, [menuOpen]);
 
   function closeMenu() {
     setMenuOpen(false);
