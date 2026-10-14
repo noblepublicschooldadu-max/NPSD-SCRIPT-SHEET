@@ -383,3 +383,9 @@ html[data-public-theme="dark"] .public-page .admission-field small { color: var(
   .hero-copy, .hero-visual { animation: none; }
   .public-home .btn, .class-card, .text-link span, .menu-glyph i { transition: none; }
 }
+
+html[data-public-theme="dark"] .site-header select { color: #edf3fb; background-color: #14263d; border-color: #35475e; }
+.site-header, .site-footer, .public-home, .public-page, .public-home .card { transition: background-color .2s ease, color .2s ease, border-color .2s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .site-header, .site-footer, .public-home, .public-page, .public-home .card { transition: none; }
+}
