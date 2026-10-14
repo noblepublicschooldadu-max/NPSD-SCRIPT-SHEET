@@ -37,8 +37,8 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
-      <Script id="public-theme-init" strategy="beforeInteractive">{themeInitScript}</Script>
       <body>
+        <Script id="public-theme-init" strategy="beforeInteractive">{themeInitScript}</Script>
         <LanguageProvider>
           <SiteChrome>{children}</SiteChrome>
         </LanguageProvider>
