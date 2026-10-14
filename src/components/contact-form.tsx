@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useLanguage } from "@/components/language-provider";
+import { publicSiteContent as copy } from "@/lib/public-site/content";
 
 export function ContactForm() {
   const { t } = useLanguage();
@@ -25,7 +26,7 @@ export function ContactForm() {
 
   return (
     <form className="card enquiry-form" onSubmit={submit} noValidate>
-      <div className="enquiry-form-heading"><h3>Send an enquiry</h3><p>Fields marked * are required.</p></div>
+      <div className="enquiry-form-heading"><h3>{copy.enquiry.formTitle}</h3><p>Fields marked * are required.</p></div>
       <div>
         <label htmlFor="contact-name" className="field-label">{t.formName} <span aria-hidden="true">*</span></label>
         <input id="contact-name" className="field field-input" autoComplete="name" maxLength={120} value={name} onChange={event => { setName(event.target.value); resetStatus(); }} required aria-required="true" aria-invalid={status === "error" && name.trim().length < 2} />
@@ -38,10 +39,10 @@ export function ContactForm() {
         <label htmlFor="contact-message" className="field-label">{t.formMessage} <span aria-hidden="true">*</span></label>
         <textarea id="contact-message" className="field field-input min-h-32 resize-y" maxLength={2000} value={message} onChange={event => { setMessage(event.target.value); resetStatus(); }} required aria-required="true" aria-invalid={status === "error" && message.trim().length < 10} />
       </div>
-      <button className="btn btn-primary enquiry-submit" type="submit">Check enquiry</button>
-      <p className="form-privacy-note">Please do not include passwords, identity documents or other sensitive personal information. This form does not send or store your message.</p>
+      <button className="btn btn-primary enquiry-submit" type="submit">{copy.enquiry.formButton}</button>
+      <p className="form-privacy-note">{copy.enquiry.privacy}</p>
       <div role={status === "error" ? "alert" : "status"} aria-live="polite" className={status === "error" ? "form-feedback is-error" : status === "unavailable" ? "form-feedback is-unavailable" : "sr-only"}>
-        {status === "error" ? t.formError : status === "unavailable" ? "Your message has not been sent or saved because online enquiries are not connected. Please use a school-verified contact channel once one is published." : ""}
+        {status === "error" ? t.formError : status === "unavailable" ? "{copy.enquiry.notSent}" : ""}
       </div>
     </form>
   );
