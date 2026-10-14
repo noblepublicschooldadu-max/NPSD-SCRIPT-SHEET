@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { LanguageProvider } from "@/components/language-provider";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
+import { SiteChrome } from "@/components/site-chrome";
 
 const siteDescription = "Discover Noble Public School Dadu, a school community in Dadu, Sindh, Pakistan, serving primary and middle learning across Classes 1–8.";
 
@@ -38,9 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" dir="ltr" suppressHydrationWarning>
       <body>
         <LanguageProvider>
-          <SiteHeader />
-          <main id="main">{children}</main>
-          <SiteFooter />
+          <SiteChrome>{children}</SiteChrome>
         </LanguageProvider>
       </body>
     </html>
