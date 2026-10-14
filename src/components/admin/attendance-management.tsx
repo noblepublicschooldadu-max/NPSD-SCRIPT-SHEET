@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { adminRequest, AdminApiError } from "@/lib/admin/service";
 import { csvSafe, type AttendanceRecord } from "@/lib/attendance/contracts";
 type AttendanceResponse = { summary?: { present?: number; absent?: number; late?: number; excused?: number; unmarked?: number; total?: number }; records?: AttendanceRecord[]; audit?: Array<Record<string, unknown>> };
