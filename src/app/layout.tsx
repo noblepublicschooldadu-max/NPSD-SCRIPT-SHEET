@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { LanguageProvider } from "@/components/language-provider";
 import { SiteChrome } from "@/components/site-chrome";
@@ -35,9 +36,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: "(()=>{try{const t=localStorage.getItem('npsd-public-theme');document.documentElement.dataset.publicTheme=(t==='light'||t==='dark')?t:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.publicTheme='light'}})()" }} />
-      </head>
+      <Script id="public-theme-init" strategy="beforeInteractive">
+        {\`(()=>{try{const t=localStorage.getItem('npsd-public-theme');document.documentElement.dataset.publicTheme=(t==='light'||t==='dark')?t:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.publicTheme='light'}})()\`}
+      </Script>
       <body>
         <LanguageProvider>
           <SiteChrome>{children}</SiteChrome>
