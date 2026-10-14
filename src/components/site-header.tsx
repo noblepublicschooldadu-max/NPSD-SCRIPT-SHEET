@@ -18,6 +18,7 @@ const links = [
 export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const firstMobileLink = useRef<HTMLAnchorElement>(null);
+  const menuButton = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (menuOpen) firstMobileLink.current?.focus();
@@ -25,7 +26,10 @@ export function SiteHeader() {
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setMenuOpen(false);
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        menuButton.current?.focus();
+      }
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
@@ -53,6 +57,7 @@ export function SiteHeader() {
           <ThemeToggle />
           <Link href="/admissions" className="header-admissions">Admissions <span aria-hidden="true">↗</span></Link>
           <button
+            ref={menuButton}
             className="mobile-menu-toggle"
             type="button"
             aria-expanded={menuOpen}
