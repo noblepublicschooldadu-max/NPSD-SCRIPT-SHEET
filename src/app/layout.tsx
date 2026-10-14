@@ -7,7 +7,6 @@ import { SiteFooter } from "@/components/site-footer";
 const siteDescription = "Discover Noble Public School Dadu, a school community in Dadu, Sindh, Pakistan, serving primary and middle learning across Classes 1–8.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://noblepublicschooldadu-max.vercel.app"),
   title: {
     default: "Noble Public School Dadu | Building Knowledge, Inspiring Futures",
     template: "%s | Noble Public School Dadu",
@@ -22,7 +21,7 @@ export const metadata: Metadata = {
     description: siteDescription,
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "Noble Public School Dadu",
     description: siteDescription,
   },
