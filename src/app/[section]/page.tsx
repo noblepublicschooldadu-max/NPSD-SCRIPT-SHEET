@@ -16,7 +16,7 @@ export default function InfoPage({ params }: { params: Promise<{ section: string
   if (!allowed.includes(section as typeof allowed[number])) notFound();
   if (["admin", "teacher", "student"].includes(section)) {
     const labels: Record<string, string> = { admin: "Administrator", teacher: "Teacher", student: "Student" };
-    return <section className="container-shell min-h-[55vh] py-14 md:py-20"><div className="card mx-auto max-w-2xl p-7 md:p-10"><p className="text-sm font-bold uppercase tracking-[.16em] text-[var(--brand)]">Protected area</p><h1 className="mt-3 text-3xl font-black">{labels[section]} portal</h1><p className="muted mt-4 leading-7">This area is not available until backend authentication, server-side role authorization, and secure sessions are deployed. No role is assumed from a URL or browser state. Access is denied by default.</p><Link href="/login" className="btn btn-primary mt-6">Go to sign in</Link></div></section>;
+    return <section className="public-page container-shell"><div className="card mx-auto max-w-2xl p-7 md:p-10"><p className="text-sm font-bold uppercase tracking-[.16em] text-[var(--brand)]">Protected area</p><h1 className="mt-3 text-3xl font-black">{labels[section]} portal</h1><p className="muted mt-4 leading-7">This area is not available until backend authentication, server-side role authorization, and secure sessions are deployed. No role is assumed from a URL or browser state. Access is denied by default.</p><Link href="/login" className="btn btn-primary mt-6">Go to sign in</Link></div></section>;
   }
   const details: Record<string, { title: string; body: string }> = {
     about: { title: t.aboutTitle, body: t.aboutBody },
