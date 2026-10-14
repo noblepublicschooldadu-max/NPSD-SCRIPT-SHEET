@@ -42,7 +42,7 @@ export function ContactForm() {
       <button className="btn btn-primary enquiry-submit" type="submit">{copy.enquiry.formButton}</button>
       <p className="form-privacy-note">{copy.enquiry.privacy}</p>
       <div role={status === "error" ? "alert" : "status"} aria-live="polite" className={status === "error" ? "form-feedback is-error" : status === "unavailable" ? "form-feedback is-unavailable" : "sr-only"}>
-        {status === "error" ? t.formError : status === "unavailable" ? "{copy.enquiry.notSent}" : ""}
+        {status === "error" ? t.formError : status === "unavailable" ? copy.enquiry.notSent : ""}
       </div>
     </form>
   );
