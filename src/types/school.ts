@@ -1,0 +1,1 @@
+export type SchoolClass=1|2|3|4|5|6|7|8;export type PortalRole="admin"|"teacher"|"student";export type LocaleCode="en"|"ur"|"sd";export interface PublicNotice{id:string;title:string;body:string;publishedAt:string;attachmentUrl?:string}

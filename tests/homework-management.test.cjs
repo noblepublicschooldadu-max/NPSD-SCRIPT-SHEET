@@ -1,0 +1,23 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const ts = require('/opt/nvm/versions/node/v22.16.0/lib/node_modules/typescript/lib/typescript.js');
+const root = path.resolve(__dirname, '..');
+const contractPath = path.join(root, 'src/lib/homework/contracts.ts');
+const source = fs.readFileSync(contractPath, 'utf8');
+const js = ts.transpile(source, { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS });
+const Module = module.constructor;
+const loaded = new Module(contractPath, module);
+loaded.filename = contractPath; loaded.paths = module.paths; loaded._compile(js, contractPath);
+const { validIsoDate, validateAssignmentDates, assignmentDueState, canTeacherManageAssignment, uniqueAssignmentIds } = loaded.exports;
+
+test('calendar dates reject impossible and malformed dates', () => { assert.equal(validIsoDate('2026-02-28'), true); assert.equal(validIsoDate('2026-02-30'), false); assert.equal(validIsoDate('26-02-01'), false); });
+test('assignment due date cannot precede assigned date', () => { assert.equal(validateAssignmentDates('2026-10-01','2026-10-02'), null); assert.match(validateAssignmentDates('2026-10-03','2026-10-02'), /cannot be before/); assert.ok(validateAssignmentDates('bad','2026-10-02')); });
+test('due state does not classify invalid/missing dates', () => { assert.equal(assignmentDueState(undefined,'2026-10-14'),'unknown'); assert.equal(assignmentDueState('invalid','2026-10-14'),'unknown'); assert.equal(assignmentDueState('2026-10-13','2026-10-14'),'overdue'); assert.equal(assignmentDueState('2026-10-16','2026-10-14'),'due-soon'); assert.equal(assignmentDueState('2026-10-25','2026-10-14'),'upcoming'); });
+test('teacher ownership and current class/subject assignments are all required', () => { const a={teacherId:'t1',classId:'c1',subjectId:'s1'}; assert.equal(canTeacherManageAssignment(a,'t1',['c1'],['s1']),true); assert.equal(canTeacherManageAssignment(a,'t2',['c1'],['s1']),false); assert.equal(canTeacherManageAssignment(a,'t1',['c2'],['s1']),false); assert.equal(canTeacherManageAssignment(a,'t1',['c1'],['s2']),false); });
+test('idempotent batch identifiers must be unique and non-empty', () => { assert.equal(uniqueAssignmentIds(['a','b']),true); assert.equal(uniqueAssignmentIds(['a','a']),false); assert.equal(uniqueAssignmentIds(['']),false); });
+test('protected APIs remain fail-closed until session and backend are configured', () => { for (const p of ['src/app/api/teacher/[...operation]/route.ts','src/app/api/student/[...operation]/route.ts','src/app/api/admin/[...operation]/route.ts']) assert.match(fs.readFileSync(path.join(root,p),'utf8'),/NOT_CONFIGURED/); });
+test('student homework UI excludes drafts and never fakes submission success', () => { const s=fs.readFileSync(path.join(root,'src/components/student/student-portal.tsx'),'utf8'); assert.match(s,/item\.status === "published" \|\| item\.published === true/); assert.match(s,/Submitting answers, uploading files and viewing teacher feedback are unavailable/); });
+test('admin homework summaries are derived only from loaded backend records', () => { const s=fs.readFileSync(path.join(root,'src/components/admin/homework-management.tsx'),'utf8'); assert.match(s,/loaded\?count\("published"\):"—"/); assert.match(s,/No sample assignments or statistics are shown/); });
+test('API contract documents private attachment access and student session identity', () => { assert.match(source,/studentList:.*student identity derived from session/); assert.match(source,/privateAttachment:.*authorization checked/); assert.match(fs.readFileSync(path.join(root,'API-CONTRACT.md'),'utf8'),/Never return a public Drive URL/); });

@@ -1,0 +1,4 @@
+ "use client";
+import Link from "next/link";
+import {useLanguage} from "./language-provider";
+export function SiteFooter(){const {t}=useLanguage();return <footer className="mt-16 border-t border-[var(--border)] bg-white"><div className="container-shell grid gap-7 py-9 sm:grid-cols-2"><div><p className="font-extrabold">School Portal</p><p className="muted mt-2 max-w-sm text-sm">{t.footerNote}</p></div><div className="sm:text-end"><p className="text-sm font-bold">{t.nav.home}</p><div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-sm text-[var(--muted)] sm:justify-end"><Link href="/about">{t.nav.about}</Link><Link href="/admissions">{t.nav.admissions}</Link><Link href="/contact">{t.nav.contact}</Link><Link href="/login">{t.nav.portal}</Link></div></div></div><div className="border-t border-[var(--border)] py-4 text-center text-xs text-[var(--muted)]">© {new Date().getFullYear()} · {t.footerNote}</div></footer>}

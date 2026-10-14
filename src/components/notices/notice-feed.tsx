@@ -1,0 +1,22 @@
+"use client";
+import { useMemo, useState } from "react";
+import { useLanguage } from "@/components/language-provider";
+import { isNoticeRecord, publicNoticeVisible, studentNoticeVisible, teacherNoticeVisible } from "@/lib/notices/contracts";
+
+const copy = {
+  en: { search:"Search notices", all:"All categories", empty:"No applicable published notices", emptyBody:"Only current notices authorized for this account are shown. Drafts, expired notices and restricted audiences are excluded.", published:"Published", expires:"Expires", details:"Read notice", hide:"Hide details", category:"Category", loading:"No notice records were returned.", attachment:"Attachment access is unavailable until the secure download service is configured." },
+  ur: { search:"اعلانات تلاش کریں", all:"تمام زمرے", empty:"کوئی متعلقہ شائع شدہ اعلان نہیں", emptyBody:"صرف اس اکاؤنٹ کے لیے مجاز موجودہ اعلانات دکھائے جاتے ہیں۔ مسودے، میعاد ختم شدہ اور محدود اعلانات شامل نہیں۔", published:"اشاعت", expires:"میعاد", details:"اعلان پڑھیں", hide:"تفصیل چھپائیں", category:"زمرہ", loading:"اعلان کا کوئی ریکارڈ موصول نہیں ہوا۔", attachment:"محفوظ فائل سروس کی ترتیب تک منسلکہ دستیاب نہیں۔" },
+  sd: { search:"اعلان ڳوليو", all:"سڀ قسم", empty:"ڪو لاڳو شايع ٿيل اعلان ناهي", emptyBody:"صرف هن اڪائونٽ لاءِ مجاز موجوده اعلان ڏيکاريا وڃن ٿا. مسودا، ختم ٿيل ۽ محدود اعلان شامل ناهن.", published:"شايع ٿيو", expires:"ختم ٿئي ٿو", details:"اعلان پڙهو", hide:"تفصيل لڪايو", category:"قسم", loading:"اعلان جو ڪو رڪارڊ نه مليو.", attachment:"محفوظ فائيل سروس ترتيب ٿيڻ تائين منسلڪ موجود ناهي." },
+} as const;
+type Scope = "public" | "teacher" | "student";
+export function NoticeFeed({ items, scope, classId, sectionId, classIds = [], sectionIds = [] }: { items: unknown[]; scope: Scope; classId?: string; sectionId?: string; classIds?: string[]; sectionIds?: string[] }) {
+  const { locale } = useLanguage(); const t = copy[locale];
+  const [query, setQuery] = useState(""); const [category, setCategory] = useState("all"); const [expanded, setExpanded] = useState("");
+  const eligible = useMemo(() => items.filter(isNoticeRecord).filter(item => scope === "public" ? publicNoticeVisible(item) : scope === "teacher" ? teacherNoticeVisible(item, { classIds, sectionIds }) : studentNoticeVisible(item, { classId, sectionId })), [items, scope, classId, sectionId, classIds, sectionIds]);
+  const notices = useMemo(() => eligible.filter(item => !query || `${item.title} ${item.body} ${item.category ?? ""}`.toLowerCase().includes(query.toLowerCase())).filter(item => category === "all" || (item.category || "General") === category).sort((a,b)=>Date.parse(b.publishedAt || "")-Date.parse(a.publishedAt || "")), [eligible, query, category]);
+  const categories = [...new Set(eligible.map(item => item.category || "General"))].sort();
+  return <div className="notice-feed" dir={locale === "en" ? "ltr" : "rtl"}>
+    <div className="notice-feed-filters"><label><span className="sr-only">{t.search}</span><input aria-label={t.search} value={query} onChange={e=>setQuery(e.target.value)} placeholder={t.search}/></label><label><span className="sr-only">{t.category}</span><select aria-label={t.category} value={category} onChange={e=>setCategory(e.target.value)}><option value="all">{t.all}</option>{categories.map(value=><option key={value} value={value}>{value}</option>)}</select></label></div>
+    {notices.length ? <div className="notice-feed-list">{notices.map(item=><article key={item.id} className="notice-feed-card"><div className="notice-feed-meta"><span>{item.category || "General"}</span><time dateTime={item.publishedAt}>{t.published}: {item.publishedAt ? new Date(item.publishedAt).toLocaleDateString(locale === "ur" ? "ur-PK" : locale === "sd" ? "sd-PK" : "en-PK") : "—"}</time></div><h3>{item.title}</h3><p className={expanded === item.id ? "notice-feed-body expanded" : "notice-feed-body"}>{expanded === item.id ? item.body : item.body.length > 260 ? `${item.body.slice(0,260)}…` : item.body}</p>{item.expiresAt && <small>{t.expires}: {item.expiresAt}</small>}{item.body.length > 260 && <button className="notice-feed-link" onClick={()=>setExpanded(expanded===item.id?"":item.id)} aria-expanded={expanded===item.id}>{expanded===item.id?t.hide:t.details}</button>}{item.attachmentId && <p className="notice-feed-attachment">{t.attachment}</p>}</article>)}</div> : <div className="notice-feed-empty"><strong>{t.empty}</strong><p>{items.length ? t.emptyBody : t.loading}</p></div>}
+  </div>;
+}

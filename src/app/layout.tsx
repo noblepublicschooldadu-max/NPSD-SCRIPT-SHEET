@@ -1,0 +1,3 @@
+import type {Metadata} from "next";import "./globals.css";import {LanguageProvider} from "@/components/language-provider";import {SiteHeader} from "@/components/site-header";import {SiteFooter} from "@/components/site-footer";
+export const metadata:Metadata={title:{default:"School Portal",template:"%s | School Portal"},description:"School information, learning pathways, admissions guidance, and community updates.",applicationName:"School Portal"};
+export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en" dir="ltr"><body><LanguageProvider><SiteHeader/><main id="main">{children}</main><SiteFooter/></LanguageProvider></body></html>}
